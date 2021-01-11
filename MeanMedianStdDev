@@ -1,0 +1,75 @@
+import java.util.*; 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
+
+public class Main
+{
+         public static void main(String[] args) throws IOException
+        {
+                //try catch block to handle exceptions 
+                try 
+                {
+                        InputStreamReader reader = new InputStreamReader(System.in, StandardCharsets.UTF_8);
+                        BufferedReader myReader = new BufferedReader(reader);
+                        //read 1st line, we want to skip this because it contain field name 
+                        myReader.readLine();
+                        //varibles
+                        double value,sum=0,count=0,min=999999999,max=0;
+                        //ArrayList to store values for finding std
+                        ArrayList <Double> al=new ArrayList <Double>();
+                        //read from file until line is present
+                        String data;
+                        while ((data = myReader.readLine()) != null) 
+                        {
+                                //split string by ,
+                                String arr[]=data.split(",");
+                                //value is 2nd element of array according to input given in question
+                                value=Double.parseDouble(arr[1]);
+                                //add value to ArrayList
+                                al.add(value);
+                                //add value to sum
+                                sum+=value;
+                                //increment count
+                                count++;
+                                //calculate max
+                                if(value>max)
+                                {
+                                        max=value;
+                                }
+                                //calculate min
+                                if(value<min)
+                                {
+                                        min=value;
+                                }
+                        }
+                        //calculate mean
+                        double mean=sum/count;
+                        double std=0.0;
+                        //loop through all values
+                        for(double values:al)
+                        {
+                                //calculate std
+                                std+=Math.pow(values - mean, 2);  
+                        }
+                        std = Math.sqrt(std/count);
+                        //print values
+                        DecimalFormat d2 = new DecimalFormat("0.00");
+                        DecimalFormat d3 = new DecimalFormat("0.000");
+                        DecimalFormat d4 = new DecimalFormat("0.0000");
+                        System.out.println(d2.format(min));
+                        System.out.println(d2.format(max));
+                        System.out.println(d3.format(mean));
+                        System.out.println(d4.format(std));
+                        //close file
+                        myReader.close();
+                } 
+                
+                catch (ArithmeticException Ae)
+                {
+                        System.out.println("Count should be greater than 1 for std");
+                }
+        }
+}
